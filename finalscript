@@ -1,0 +1,32 @@
+function survey {
+
+param($pcname = $env:COMPUTERNAME)
+#header name for each task
+$header = 'Your Host Name', 
+'Your Operating System Name', 
+'Your Operating System Version'
+systeminfo.exe /FO CSV /S $pcname $cpuinfo $osinfo | 
+Select-Object |
+ConvertFrom-Csv -Header $header
+#use tasklist
+}
+
+function hashdir {
+
+#get contectns of directory
+#generate and save a hash of each file in the directory
+$dir = Get-ChildItem C:\Users -Recurse
+$dir | Get-Member
+$list = $dir | where {$_.Extension -eq ".txt"}
+$list | format-table name
+Write-Host "number of files is" $list.count 
+}
+#make sure to set the policy unrestricted in order to view the list
+Set-ExecutionPolicy Unrestricted
+
+
+function custome {
+#display all files in local gorups with xbox name
+Get-LocalGroup
+Get-Service | where {$_.DisplayName -match 'xbox'}
+}
